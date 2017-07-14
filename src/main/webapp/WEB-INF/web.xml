@@ -14,12 +14,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ServletToken</servlet-name>
-        <servlet-class>ServletAddToken</servlet-class>
+        <servlet-name>ServletAddUser</servlet-name>
+        <servlet-class>ServletAddUser</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ServletToken</servlet-name>
-        <url-pattern>/user/token</url-pattern>
+        <servlet-name>ServletAddUser</servlet-name>
+        <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
 
 

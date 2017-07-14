@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by UserPrototype on 7/12/2017.
@@ -19,9 +21,10 @@ public class ServletGenerateToken extends HttpServlet implements  Constant{
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("Am ajuns aici!!!");
         try {
-            ManageToken();
+            User user = ManageUser();
+            this.getServletConfig().getServletContext().setAttribute("completeUser", user);
+            request.getRequestDispatcher("/addUser").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +35,7 @@ public class ServletGenerateToken extends HttpServlet implements  Constant{
 
     }
 
-    private void ManageToken() throws Exception {
+    private User ManageUser() throws Exception {
 
         String url = "https://validate.mybluemix.net/token/AndreiCazan30";
         URL obj = new URL(url);
@@ -65,54 +68,33 @@ public class ServletGenerateToken extends HttpServlet implements  Constant{
         in.close();
 
         //print result
-        System.out.println(response.toString());
+        System.out.println("ServletGenerateToken RESPONSE: "+ response.toString());
         User user = (User)this.getServletConfig().getServletContext().getAttribute("sharedUser");
-        System.out.println("servlet Generate token: user -> "+ user.toString());
+        System.out.println("servlet Generate token BEFORE: user -> "+ user.toString());
 
 
         try {
-            GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email", response.toString());
 
-            System.out.println("Email trmis cu success!");
-
-           // JSONObject jsonToken = new JSONObject(response.toString());
             int TokenPUTcode = user.validateToken(response.toString());
             System.out.println(TokenPUTcode);
             if(TokenPUTcode == 200) {
-                JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), response.toString());
+                JSONObject object = new JSONObject(response.toString());
+                user.setToken(object.getString("token"));
+                System.out.println("servlet Generate token AFTER: user -> "+ user.toString());
+
+                UUID uuid =  UUID.randomUUID();
+                GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
+                        uuid.toString());
+                user.setSecretCode(uuid.toString());
+                System.out.println("Email trmis cu success!");
             }
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
 
-    }
+        return user;
 
-//    public void executePUT(JSONObject jsonObject) throws IOException, JSONException {
-//        URL url = new URL("https://validate.mybluemix.net/token");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        System.out.println("connection established!");
-//        Gson gson = new Gson();
-//        conn.setDoOutput(true);
-//        conn.setRequestMethod("PUT");
-//        conn.addRequestProperty("Content-Type", "application/json");
-//       // OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-//        OutputStream os = conn.getOutputStream();
-//        OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-//        System.out.println("outputstream established!");
-//        System.out.println(jsonObject.toString());
-//       // out.write(gson.toJson(jsonObject));
-//        osw.write(jsonObject.toString());
-//
-//        if(conn.getResponseCode() == 200){
-//            System.out.println("connection response code: 200");
-//            UserPrototype user = (UserPrototype)this.getServletConfig().getServletContext().getAttribute("sharedUser");
-//            user.setSecretCode(jsonObject.getString("token"));
-//            System.out.println("UserPrototype creat cu success!: " + user.toString());
-//        }
-//        osw.close();
-//    }
+    }
 
 
 

@@ -26,6 +26,16 @@ public class User {
     private String email;
     private String password;
     private LocalDate date;
+    private String token;
+    private String secretCode;
+
+    public String getSecretCode() {
+        return secretCode;
+    }
+
+    public void setSecretCode(String secretCode) {
+        this.secretCode = secretCode;
+    }
 
     public User(){
 
@@ -37,16 +47,16 @@ public class User {
         if(displayName==null)
             arl.add("This is not a valid Display Name. Display name should have at least 1 char and no more than 100");
         else
-            if(email==null)
-                arl.add("This is not a valid email address");
-            else
-                if(password==null)
-                    arl.add("This is not a valid password. It must be between 8 and 100 characters, can contain any character, but at least one upper case and one number");
-                else
-                    if(date==null)
-                        arl.add("This is not a valid date of birth.");
+        if(email==null)
+            arl.add("This is not a valid email address");
+        else
+        if(password==null)
+            arl.add("This is not a valid password. It must be between 8 and 100 characters, can contain any character, but at least one upper case and one number");
+        else
+        if(date==null)
+            arl.add("This is not a valid date of birth.");
 
-return  arl;
+        return  arl;
 
     }
 
@@ -90,49 +100,59 @@ return  arl;
         else return;
 
 
-            this.password=password;
+        this.password=password;
 
         if(dateValidation(date))
             this.date=date;
+
     }
 
 
-   private boolean displayNameValidation(String name){
-       if(name.length()>100 | name.length()<1)
-           return false;
 
-       return true;
+    public String getToken() {
+        return token;
     }
 
-  private boolean emailValidation(String email){
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    private boolean displayNameValidation(String name){
+        if(name.length()>100 | name.length()<1)
+            return false;
+
+        return true;
+    }
+
+    private boolean emailValidation(String email){
 
         EmailValidator validator=new EmailValidator();
 
-       if(validator.validate(email))
-           return true;
+        if(validator.validate(email))
+            return true;
 
         return false;
     }
 
-   public boolean passwordValidation(String password){
+    public boolean passwordValidation(String password){
 
-      PasswordValidator validator= new PasswordValidator();
+        PasswordValidator validator= new PasswordValidator();
 
-      if(validator.validate(password))
-          return true;
+        if(validator.validate(password))
+            return true;
 
-      return false;
+        return false;
 
     }
 
-   private boolean dateValidation(LocalDate date) {
-       boolean isValid = true;
-       if (date.isAfter(LocalDate.now().minusYears(18))) {
-           isValid = false;
+    private boolean dateValidation(LocalDate date) {
+        boolean isValid = true;
+        if (date.isAfter(LocalDate.now().minusYears(18))) {
+            isValid = false;
 
-       }
-       return isValid;
-   }
+        }
+        return isValid;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -157,6 +177,7 @@ return  arl;
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", date=" + date +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
