@@ -41,14 +41,13 @@ public class Servlet extends HttpServlet implements Constant {
         User user = new User();
         try {
             org.json.JSONObject object = new org.json.JSONObject(jsonString);
-           // System.out.println("DATA NASTERII ESTE: "+ object.getString("dateOfBirth"));
+
             if(object!=null){
                 String password = object.getString("password");
                 PasswordValidator validator = new PasswordValidator();
                 if(validator.validate(password)) {
                     String cryptedPass = Crypt.cryptPassword(password);
-//                    user = new User(object.getString("displayName"), object.getString("email"),
-//                            object.getString("password"), simpleDateFormat.parse(object.getString("dateOfBirth")));
+
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
                     formatter = formatter.withLocale(Locale.GERMANY );  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
@@ -56,6 +55,7 @@ public class Servlet extends HttpServlet implements Constant {
 
                     user = new User(object.getString("displayName"), object.getString("email"),
                             cryptedPass, date);
+
 
                     mistakes = user.dataValidation();
                     if(mistakes.size() != 0){

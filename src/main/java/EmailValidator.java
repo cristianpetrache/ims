@@ -1,8 +1,12 @@
 /**
  * Created by User on 7/11/2017.
  */
+import com.mysql.cj.api.mysqla.result.Resultset;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,31 +44,19 @@ public class EmailValidator {
 
     public static boolean uniqueEmail(String email) {
         Connection dbConnection = ConnectionJDBC.getConection();
-
-        int repetareEmail = 0;
+        String selectSQL = "SELECT * FROM users.users_true WHERE email = '" + email+"'";
         try {
-
-
-            String selectSQL = "SELECT COUNT(id) as total FROM users.users_true WHERE email = ?";
-            java.sql.PreparedStatement ps = dbConnection.prepareStatement(selectSQL);
-            ps.setString(1, email);
-            ResultSet rs=  ps.executeQuery();
-
-
-            while(rs.next()){
-                repetareEmail= rs.getInt("total");
+            Statement statement = dbConnection.createStatement();
+            ResultSet rs = statement.executeQuery(selectSQL);
+            if(rs.next()){
+                System.out.println("EMAIL ALREADY EXISTS");
+                return false;
+            }else{
+                return true;
             }
-
-
-
-            // System.out.println(repetareEmail);
-
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (repetareEmail == 0)
-            return true;
-        return false;
+        return true;
     }
 }

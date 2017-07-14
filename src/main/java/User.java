@@ -69,9 +69,9 @@ public class User {
             conn.setDoOutput(true);
             conn.setRequestMethod("PUT");
             conn.addRequestProperty("Content-Type", "application/json");
-            //Gson gson = new Gson();
+
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-            //out.write(gson.toJson(jsonObject));
+
             out.write(token);
             out.close();
             int responseCode = conn.getResponseCode();
