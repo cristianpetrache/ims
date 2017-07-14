@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <servlet>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>Servlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServletToken</servlet-name>
+        <servlet-class>ServletAddToken</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletToken</servlet-name>
+        <url-pattern>/user/token</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ServletGenerateToken</servlet-name>
+        <servlet-class>ServletGenerateToken</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ServletGenerateToken</servlet-name>
+        <url-pattern>/getToken</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ServletLoginCheck</servlet-name>
+        <servlet-class>ServletLoginCheck</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletLoginCheck</servlet-name>
+        <url-pattern>/ServletLoginCheck</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ServletWelcome</servlet-name>
+        <servlet-class>ServletWelcome</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletWelcome</servlet-name>
+        <url-pattern>/ServletWelcome</url-pattern>
+    </servlet-mapping>
+
+</web-app>
