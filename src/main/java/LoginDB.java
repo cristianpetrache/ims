@@ -7,10 +7,12 @@ public class LoginDB {
     public static boolean validate(String email,String pass){
         boolean status=false;
         int confirmed=1;
+        Connection con = null;
+
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost/users","root","root");
+             con=ConnectionJDBC.getConection();
+         //           "jdbc:mysql://localhost/users","root","root");
 
             PreparedStatement ps=con.prepareStatement(
                     "select * from users_true where email=? and password=? and confirmed=?");

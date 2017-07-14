@@ -79,7 +79,7 @@ public class ServletGenerateToken extends HttpServlet implements  Constant{
             int TokenPUTcode = user.validateToken(response.toString());
             System.out.println(TokenPUTcode);
             if(TokenPUTcode == 200) {
-                JDBCConnection.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), response.toString());
+                JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), response.toString());
             }
 
 
