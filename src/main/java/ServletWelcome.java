@@ -12,19 +12,12 @@ public class ServletWelcome extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        User user = (User)this.getServletConfig().getServletContext().getAttribute("FinalUser");
 
-        User user = (User)this.getServletConfig().getServletContext().getAttribute("UserLogIn");
-       // String n=request.getParameter("username");
+        System.out.println(user.getDisplayName());
+        System.out.println(user.getEmail());
+        System.out.println(user.getPassword());
 
-        out.println("Welcome");
-        out.println(user.getDisplayName());
-        out.println(user.getDate());
-        out.println(user.getEmail());
-        out.println(user.getPassword());
-
-        out.close();
     }
 
 }

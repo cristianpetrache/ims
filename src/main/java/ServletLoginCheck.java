@@ -1,5 +1,15 @@
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,28 +20,66 @@ import javax.servlet.http.HttpServletResponse;
 
 //@WebServlet(name = "servlet1")
 public class ServletLoginCheck extends HttpServlet {
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        final String queryCheck = "SELECT * from users_true WHERE email = ?";
 
-Crypt crypter=new Crypt();
-        String email=request.getParameter("email");
-        String password=crypter.cryptPassword( request.getParameter("userpass"));
-
-        if(LoginDB.validate(email, password)){
-            RequestDispatcher rd=request.getRequestDispatcher("ServletWelcome");
-            rd.forward(request,response);
-
-        }
-        else{
-            out.print("Sorry username or password error");
-            RequestDispatcher rd=request.getRequestDispatcher("index.html");
-            rd.include(request,response);
+        StringBuilder jsonBuilder = new StringBuilder();
+        String line = null;
+        try {
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null)
+                jsonBuilder.append(line);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        out.close();
+        String jsonString = jsonBuilder.toString();
+        JSONObject jsonObject = new JSONObject(jsonString);
+        Crypt crypter = new Crypt();
+        String cryptedPass = crypter.cryptPassword( jsonObject.getString("password"));
+
+        if(LoginDB.validate(jsonObject.getString("email"), cryptedPass)){
+            System.out.println("LOG IN SUCCESSFUL!");
+            Connection connection = ConnectionJDBC.getConection();
+            final PreparedStatement ps;
+            try {
+                ps = connection.prepareStatement(queryCheck);
+                ps.setString(1, jsonObject.getString("email"));
+                final ResultSet resultSet = ps.executeQuery();
+                if(resultSet.next()){
+                    User user = new User();
+                    user.setDisplayName(resultSet.getString("display_name"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setPassword(resultSet.getString("password"));
+
+                    this.getServletConfig().getServletContext().setAttribute("FinalUser", user);
+                    request.getRequestDispatcher("/ServletWelcome").forward(request,response);
+                }
+
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+
+        }else{
+            System.out.println("LOG IN UNSUCCESFUL!");
+            System.out.println("USERNAME / PASSWORD INCORRECT");
+        }
+
     }
 
 

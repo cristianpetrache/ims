@@ -182,4 +182,20 @@ public class User {
                 ", token='" + token + '\'' +
                 '}';
     }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

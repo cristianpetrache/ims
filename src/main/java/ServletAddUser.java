@@ -21,6 +21,7 @@ public class ServletAddUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) this.getServletConfig().getServletContext().getAttribute("User");
+
         Connection connection = ConnectionJDBC.getConection();
         final String queryCheck = "SELECT * from users_true WHERE secret_code = ?";
 
@@ -50,6 +51,9 @@ public class ServletAddUser extends HttpServlet {
                     PreparedStatement updateEXP = connection.prepareStatement("update `users_true` set `secret_code` = 'validated'  where `id_user` = '" + id + "'");
                     int affectedRows = updateEXP.executeUpdate();
                     System.out.println("Validation succesful!!! ");
+
+
+
                 }else{
                     System.out.println("NU EXISTA IN BD ACEST SECRET CODE!");
                 }
@@ -67,8 +71,6 @@ public class ServletAddUser extends HttpServlet {
             }
         }
 
-        this.getServletConfig().getServletContext().setAttribute("UserLogIn", user);
-        request.getRequestDispatcher("/ServletWelcome").forward(request, response);
 
     }
 
