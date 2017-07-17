@@ -10,7 +10,7 @@ public class JDBCregister {
     // static final String USER = "root";
     //static final String PASS = "root";
 
-    public static void insertBD(String displayName, String email, String password, String dateOfBirth, String token) {
+    public static void insertBD(String displayName, String email, String password, String dateOfBirth, String secret_code) {
 
 
         Connection conn = null;
@@ -31,13 +31,13 @@ public class JDBCregister {
 
 
 
-            stmt = conn.prepareStatement("INSERT INTO users_true( display_name,email, password, date, token) VALUES ( ?, ?, ?, ?, ?)");
+            stmt = conn.prepareStatement("INSERT INTO users_true( display_name,email, password, date, secret_code) VALUES ( ?, ?, ?, ?, ?)");
 
             stmt.setString(1, displayName);
             stmt.setString(2, email);
             stmt.setString(3, password);
             stmt.setString(4, dateOfBirth);
-            stmt.setString(5, token);
+            stmt.setString(5, secret_code);
 
             stmt.executeUpdate();
 

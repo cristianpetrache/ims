@@ -6,7 +6,7 @@ import java.sql.*;
 public class LoginDB {
     public static boolean validate(String email,String pass){
         boolean status=false;
-        int confirmed=1;
+        String secret_code= "validated";
         Connection con = null;
 
         try{
@@ -15,10 +15,10 @@ public class LoginDB {
          //           "jdbc:mysql://localhost/users","root","root");
 
             PreparedStatement ps=con.prepareStatement(
-                    "select * from users_true where email=? and password=? and confirmed=?");
+                    "select * from users_true where email=? and password=? and secret_code=?");
             ps.setString(1,email);
             ps.setString(2,pass);
-            ps.setInt(3,confirmed);
+            ps.setString(3, secret_code);
 
             ResultSet rs=ps.executeQuery();
             status=rs.next();

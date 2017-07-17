@@ -23,16 +23,6 @@
     </servlet-mapping>
 
 
-    <servlet>
-        <servlet-name>ServletGenerateToken</servlet-name>
-        <servlet-class>ServletGenerateToken</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ServletGenerateToken</servlet-name>
-        <url-pattern>/getToken</url-pattern>
-    </servlet-mapping>
-
 
     <servlet>
         <servlet-name>ServletLoginCheck</servlet-name>

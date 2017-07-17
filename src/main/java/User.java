@@ -55,6 +55,8 @@ public class User {
         else
         if(date==null)
             arl.add("This is not a valid date of birth.");
+        if(token==null)
+            arl.add("This is not a valid token!");
 
         return  arl;
 

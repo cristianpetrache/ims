@@ -18,32 +18,38 @@ public class ServletAddUser extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        User user = (User) this.getServletConfig().getServletContext().getAttribute("completeUser");
-        System.out.println("servletAddUser: "+ user.toString());
 
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line = null;
-        try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
-                jsonBuilder.append(line);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        String jsonString = jsonBuilder.toString();
-        try {
-            JSONObject object = new JSONObject(jsonString);
-            if( user.getSecretCode().equals(object.getString("secretCode"))){
-                JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getToken());
-            } else{
-                System.out.println("Invalid secret code. Make sure you type it right!");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
+
+
+//        User user = (User) this.getServletConfig().getServletContext().getAttribute("completeUser");
+//        System.out.println("servletAddUser: "+ user.toString());
+//
+//        StringBuilder jsonBuilder = new StringBuilder();
+//        String line = null;
+//        try {
+//            BufferedReader reader = request.getReader();
+//            while ((line = reader.readLine()) != null)
+//                jsonBuilder.append(line);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        String jsonString = jsonBuilder.toString();
+//        try {
+//            JSONObject object = new JSONObject(jsonString);
+//            if( user.getSecretCode().equals(object.getString("secretCode"))){
+//                JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getToken());
+//            } else{
+//                System.out.println("Invalid secret code. Make sure you type it right!");
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

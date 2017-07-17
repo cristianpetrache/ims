@@ -1,6 +1,9 @@
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Created by UserPrototype on 7/11/2017.
@@ -46,6 +50,7 @@ public class Servlet extends HttpServlet implements Constant {
                 String password = object.getString("password");
                 PasswordValidator validator = new PasswordValidator();
                 if(validator.validate(password)) {
+
                     String cryptedPass = Crypt.cryptPassword(password);
 
 
@@ -57,6 +62,25 @@ public class Servlet extends HttpServlet implements Constant {
                             cryptedPass, date);
 
 
+                    JSONObject token = new JSONObject("{ token: "+object.getString("token")+ "}");
+
+                    int responseCode = user.validateToken(token.toString());
+                    if(responseCode == 200){
+
+                        user.setToken(object.getString("token"));
+
+                        //generate and send secretCode
+                        UUID uuid =  UUID.randomUUID();
+                        GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
+                                uuid.toString());
+                        user.setSecretCode(uuid.toString());
+                        System.out.println("Email trmis cu success!");
+
+                        JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getSecretCode());
+                    }else{
+                        System.out.println("The token has not been validated!");
+                    }
+
                     mistakes = user.dataValidation();
                     if(mistakes.size() != 0){
                         for(String mistake: mistakes){
@@ -65,8 +89,8 @@ public class Servlet extends HttpServlet implements Constant {
                     }else {
 
                         System.out.println("servlet POST: " + user.toString());
-                        this.getServletConfig().getServletContext().setAttribute("sharedUser", user);
-                        request.getRequestDispatcher("/getToken").forward(request, response);
+                       // this.getServletConfig().getServletContext().setAttribute("User", user);
+                       // request.getRequestDispatcher("/addUser").forward(request, response);
                     }
                 }else{
                     System.out.println("PAROLA INVALIDA");
@@ -75,6 +99,10 @@ public class Servlet extends HttpServlet implements Constant {
                 System.out.println("---FAIL TO CONVERT JSON---");
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
 
