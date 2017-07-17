@@ -89,8 +89,8 @@ public class Servlet extends HttpServlet implements Constant {
                     }else {
 
                         System.out.println("servlet POST: " + user.toString());
-                       // this.getServletConfig().getServletContext().setAttribute("User", user);
-                       // request.getRequestDispatcher("/addUser").forward(request, response);
+                        this.getServletConfig().getServletContext().setAttribute("User", user);
+                        request.getRequestDispatcher("/addUser").forward(request, response);
                     }
                 }else{
                     System.out.println("PAROLA INVALIDA");
