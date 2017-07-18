@@ -25,10 +25,12 @@ import java.util.UUID;
  */
 @WebServlet(name = "Servlet")
 public class Servlet extends HttpServlet implements Constant {
+    PrintWriter out;
 
     public ArrayList<String> mistakes = new ArrayList<>();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        out=response.getWriter();
 
         StringBuilder jsonBuilder = new StringBuilder();
         String line = null;
@@ -75,16 +77,22 @@ public class Servlet extends HttpServlet implements Constant {
                                 uuid.toString());
                         user.setSecretCode(uuid.toString());
                         System.out.println("Email trmis cu success!");
+                        out.print("Email trmis cu success!");
+                        out.flush();
 
                         JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getSecretCode());
                     }else{
                         System.out.println("The token has not been validated!");
+                        out.print("The token has not been validated!");
+                        out.flush();
                     }
 
                     mistakes = user.dataValidation();
                     if(mistakes.size() != 0){
                         for(String mistake: mistakes){
                             System.out.println(mistake);
+                            out.print(mistake);
+                            out.flush();
                         }
                     }else {
 
@@ -94,9 +102,13 @@ public class Servlet extends HttpServlet implements Constant {
                     }
                 }else{
                     System.out.println("PAROLA INVALIDA");
+                    out.print("PAROLA INVALIDA");
+                    out.flush();
                 }
             }else{
                 System.out.println("---FAIL TO CONVERT JSON---");
+                out.print("---FAIL TO CONVERT JSON---");
+                out.flush();
             }
         } catch (JSONException e) {
             e.printStackTrace();

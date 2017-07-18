@@ -1,16 +1,23 @@
 /**
  * Created by User on 7/14/2017.
  */
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 
 public class ConnectionJDBC {
 
+    Properties prop = new Properties();
+    InputStream input = null;
+
     public static final String JDBC_URL = "jdbc:mysql://localhost:3306/users";
     public static final String JDBC_USER = "root";
     public static final String JDBC_PASS = "root";
+
+
 
     static {
         try {

@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 //@WebServlet(name = "servlet1")
 public class ServletLoginCheck extends HttpServlet {
+    PrintWriter out;
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        out= response.getWriter();
 
         final String queryCheck = "SELECT * from users_true WHERE email = ?";
 
@@ -43,6 +45,8 @@ public class ServletLoginCheck extends HttpServlet {
 
         if(LoginDB.validate(jsonObject.getString("email"), cryptedPass)){
             System.out.println("LOG IN SUCCESSFUL!");
+            out.print("Log in successful!");
+            out.flush();
             Connection connection = ConnectionJDBC.getConection();
             final PreparedStatement ps;
             try {
@@ -77,7 +81,11 @@ public class ServletLoginCheck extends HttpServlet {
 
         }else{
             System.out.println("LOG IN UNSUCCESFUL!");
+            out.print("Log in succesfull!");
+            out.flush();
             System.out.println("USERNAME / PASSWORD INCORRECT");
+            out.print("USERNAME / PASSWORD INCORRECT");
+            out.flush();
         }
 
     }

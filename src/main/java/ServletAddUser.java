@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 
 /**
@@ -16,9 +17,11 @@ import java.sql.*;
  */
 @WebServlet(name = "ServletAddUser")
 public class ServletAddUser extends HttpServlet {
+    PrintWriter out;
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        out=response.getWriter();
 
         User user = (User) this.getServletConfig().getServletContext().getAttribute("User");
 
@@ -51,14 +54,20 @@ public class ServletAddUser extends HttpServlet {
                     PreparedStatement updateEXP = connection.prepareStatement("update `users_true` set `secret_code` = 'validated'  where `id_user` = '" + id + "'");
                     int affectedRows = updateEXP.executeUpdate();
                     System.out.println("Validation succesful!!! ");
+                    out.print("Validation successful!");
+                    out.flush();
 
 
 
                 }else{
                     System.out.println("NU EXISTA IN BD ACEST SECRET CODE!");
+                    out.print("Secret code doesnt exist in BD");
+                    out.flush();
                 }
             }else{
                 System.out.println("SECRET CODE INCORECT!");
+                out.print("Incorrect secret code!");
+                out.flush();
             }
 
         } catch (SQLException e) {
