@@ -9,7 +9,7 @@ public class NameValidator {
     private Pattern pattern;
     private Matcher matcher;
 
-    private static final String NAME_PATTERN="^[a-zA-Z0-9]*$";
+    private static final String NAME_PATTERN="^[_A-Za-z0-9]$";
 
     public NameValidator(){
         pattern=Pattern.compile(NAME_PATTERN);
@@ -25,7 +25,7 @@ public class NameValidator {
     public  boolean validate(final String hex) {
         //   Matcher matcher;
         matcher = pattern.matcher(hex);
-        if(displayNameValidation(hex) & matcher.matches())
+        if(displayNameValidation(hex) && matcher.matches())
             return true;
 
         return false;

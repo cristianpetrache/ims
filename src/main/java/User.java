@@ -120,10 +120,10 @@ public class User {
     }
 
     private boolean displayNameValidation(String name){
-        if(name.length()>100 | name.length()<1)
-            return false;
+        NameValidator nv=new NameValidator();
 
-        return true;
+        return nv.validate(name);
+
     }
 
     private boolean emailValidation(String email){

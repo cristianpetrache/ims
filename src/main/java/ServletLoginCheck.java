@@ -48,6 +48,7 @@ public class ServletLoginCheck extends HttpServlet {
             out.print("Log in successful!");
             out.flush();
             Connection connection = ConnectionJDBC.getConection();
+
             final PreparedStatement ps;
             try {
                 ps = connection.prepareStatement(queryCheck);
@@ -80,8 +81,8 @@ public class ServletLoginCheck extends HttpServlet {
 
 
         }else{
-            System.out.println("LOG IN UNSUCCESFUL!");
-            out.print("Log in succesfull!");
+            System.out.println("LOG IN UNSUCCESSFUL!");
+            out.print("Log in successful!");
             out.flush();
             System.out.println("USERNAME / PASSWORD INCORRECT");
             out.print("USERNAME / PASSWORD INCORRECT");
