@@ -127,7 +127,7 @@ public class ServletLoginCheck extends HttpServlet {
                 out.append(" Failed to type in the correct password! You've been locked!");
                 Date timeout = (Date) httpSession.getAttribute("timeout");
                 long actualTime = timeout.getTime() - (new Date().getTime());
-                out.append("Come back after " + TimeUnit.MILLISECONDS.toSeconds(actualTime) + " seconds");
+                out.append("Come back after " + (TimeUnit.MILLISECONDS.toSeconds(actualTime))/60 + " minutes");
             }
         }else{
             out.append("Email: " + httpSession.getAttribute("email").toString() +" already is use!");
