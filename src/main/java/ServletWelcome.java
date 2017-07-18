@@ -26,39 +26,12 @@ public class ServletWelcome extends HttpServlet {
 
         int numberOfMissingFields=0; // is missing: (name->1) (pass->3) (date->5) (name & pass->4) (name & date->6) (pass & date->8) ( all 3 ->9)
 
-
-
-
-
         User user = (User)this.getServletConfig().getServletContext().getAttribute("FinalUser");
-
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-
-
-
-
-
         String userEmail=user.getEmail();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         String userDisplay_name="";
         String userCryptedPassword=null;

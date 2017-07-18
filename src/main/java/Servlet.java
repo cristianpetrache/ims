@@ -62,44 +62,49 @@ public class Servlet extends HttpServlet implements Constant {
 
                     user = new User(object.getString("displayName"), object.getString("email"),
                             cryptedPass, date);
-
+                    user.setToken(object.getString("token"));
 
                     JSONObject token = new JSONObject("{ token: "+object.getString("token")+ "}");
 
                     int responseCode = user.validateToken(token.toString());
                     if(responseCode == 200){
 
-                        user.setToken(object.getString("token"));
+                        mistakes = user.dataValidation();
+                        if(mistakes.size() != 0){
+                            for(String mistake: mistakes){
+                                System.out.println(mistake);
+                                out.print(mistake);
+                                out.flush();
+                            }
+                        }else {
 
-                        //generate and send secretCode
-                        UUID uuid =  UUID.randomUUID();
-                        GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
-                                uuid.toString());
-                        user.setSecretCode(uuid.toString());
-                        System.out.println("Email trmis cu success!");
-                        out.print("Email trmis cu success!");
-                        out.flush();
+                            user.setToken(object.getString("token"));
 
-                        JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getSecretCode());
+                            //generate and send secretCode
+                            UUID uuid =  UUID.randomUUID();
+                            GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
+                                    uuid.toString());
+                            user.setSecretCode(uuid.toString());
+                            System.out.println("Email trmis cu success!");
+                            out.print("Email trmis cu success!");
+                            out.flush();
+
+                            JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getSecretCode());
+
+                            System.out.println("servlet POST: " + user.toString());
+                            this.getServletConfig().getServletContext().setAttribute("User", user);
+                            request.getRequestDispatcher("/addUser").forward(request, response);
+                        }
+
+
+
                     }else{
                         System.out.println("The token has not been validated!");
                         out.print("The token has not been validated!");
                         out.flush();
                     }
 
-                    mistakes = user.dataValidation();
-                    if(mistakes.size() != 0){
-                        for(String mistake: mistakes){
-                            System.out.println(mistake);
-                            out.print(mistake);
-                            out.flush();
-                        }
-                    }else {
 
-                        System.out.println("servlet POST: " + user.toString());
-                        this.getServletConfig().getServletContext().setAttribute("User", user);
-                        request.getRequestDispatcher("/addUser").forward(request, response);
-                    }
                 }else{
                     System.out.println("PAROLA INVALIDA");
                     out.print("PAROLA INVALIDA");
