@@ -1,7 +1,7 @@
 /**
  * Created by User on 7/11/2017.
  */
-import com.mysql.cj.api.mysqla.result.Resultset;
+//import com.mysql.cj.api.mysqla.result.Resultset;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

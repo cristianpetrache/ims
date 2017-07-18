@@ -103,9 +103,10 @@ public class ServletWelcome extends HttpServlet {
                 if (mistakes.size() != 0) {
                     for (String m : mistakes) {
                         out.println(m);
-                        out.flush();
+
                         System.out.println(m);
                     }
+                    mistakes.clear();
                 } else {
 
 
