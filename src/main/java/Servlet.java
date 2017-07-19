@@ -83,12 +83,18 @@ public class Servlet extends HttpServlet implements Constant {
 
                             //generate and send secretCode
                             UUID uuid =  UUID.randomUUID();
-                            GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
-                                    uuid.toString());
-                            user.setSecretCode(uuid.toString());
-                            System.out.println("Email trmis cu success!");
-                            out.print("Email trmis cu success!");
-                            out.flush();
+                            try {
+                                GoogleMail.Send("supermega.team.0@gmail.com", "easypeasylemonsqueezy", user.getEmail(), "Team 0 verification email",
+                                        uuid.toString());
+                                user.setSecretCode(uuid.toString());
+                                System.out.println("Email trmis cu success!");
+                                out.print("Email trmis cu success!");
+                                out.flush();
+                            }catch (javax.mail.SendFailedException e)
+                            {
+                                out.println("mail exception: Invalid Adress");
+                                out.flush();
+                            }
 
                             JDBCregister.insertBD(user.getDisplayName(), user.getEmail(), user.getPassword(),String.valueOf(user.getDate()), user.getSecretCode());
 
