@@ -34,6 +34,7 @@ public class Servlet extends HttpServlet implements Constant {
 
         StringBuilder jsonBuilder = new StringBuilder();
         String line = null;
+
         try {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null)
@@ -57,7 +58,7 @@ public class Servlet extends HttpServlet implements Constant {
 
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-                    formatter = formatter.withLocale(Locale.GERMANY );  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+                    formatter = formatter.withLocale(Locale.UK );  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
                     LocalDate date = LocalDate.parse(object.getString("dateOfBirth"), formatter);
 
                     user = new User(object.getString("displayName"), object.getString("email"),

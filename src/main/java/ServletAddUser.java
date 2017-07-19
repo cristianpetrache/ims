@@ -30,6 +30,7 @@ public class ServletAddUser extends HttpServlet {
 
         StringBuilder jsonBuilder = new StringBuilder();
         String line = null;
+
         try {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null)
@@ -53,7 +54,7 @@ public class ServletAddUser extends HttpServlet {
                     int id = resultSet.getInt("id_user");
                     PreparedStatement updateEXP = connection.prepareStatement("update `users_true` set `secret_code` = 'validated'  where `id_user` = '" + id + "'");
                     int affectedRows = updateEXP.executeUpdate();
-                    System.out.println("Validation succesful!!! ");
+                    System.out.println("Validation successful!!! ");
                     out.print("Validation successful!");
                     out.flush();
 
@@ -61,7 +62,7 @@ public class ServletAddUser extends HttpServlet {
 
                 }else{
                     System.out.println("NU EXISTA IN BD ACEST SECRET CODE!");
-                    out.print("Secret code doesnt exist in BD");
+                    out.print("Secret code doesn't exist in BD");
                     out.flush();
                 }
             }else{
