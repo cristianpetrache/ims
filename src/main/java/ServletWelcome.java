@@ -72,6 +72,10 @@ public class ServletWelcome extends HttpServlet {
 
                 }
 
+
+
+
+
                 PasswordValidator validator = new PasswordValidator();
                 try {
                     String pass = js.getString("password");
@@ -84,10 +88,13 @@ public class ServletWelcome extends HttpServlet {
 
                 }
 
-                DateValidator dateValidator = new DateValidator();
 
+
+
+
+                DateValidator dateValidator = new DateValidator();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-                formatter = formatter.withLocale(Locale.GERMANY);  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+                formatter = formatter.withLocale(Locale.UK);  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
                 try {
                     LocalDate date = LocalDate.parse(js.getString("dateOfBirth"), formatter);
 
@@ -100,6 +107,11 @@ public class ServletWelcome extends HttpServlet {
 
                 }
 
+
+
+
+
+
                 if (mistakes.size() != 0) {
                     for (String m : mistakes) {
                         out.println(m);
@@ -107,6 +119,10 @@ public class ServletWelcome extends HttpServlet {
                         System.out.println(m);
                     }
                     mistakes.clear();
+
+
+
+
                 } else {
 
 
@@ -148,6 +164,10 @@ public class ServletWelcome extends HttpServlet {
 
 
     }
+
+
+
+
 
     private void insert(String name, String user_email, String password1, String date1) {
 
