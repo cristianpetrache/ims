@@ -1,8 +1,6 @@
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +23,34 @@ import javax.servlet.http.HttpSession;
 //@WebServlet(name = "servlet1")
 public class ServletLoginCheck extends HttpServlet {
     PrintWriter out;
+    public static String LOCK_TIME;
+    public static String LOGIN_ATTEMPTS;
+
+    static {
+        Properties properties = new Properties();
+        InputStream inputStream = null;
+
+        try {
+            //inputStream = new FileInputStream("db.properties");
+            properties.load(ConnectionJDBC.class.getResourceAsStream("/login.properties"));
+
+            LOCK_TIME=properties.getProperty("LOCK_TIME");
+            LOGIN_ATTEMPTS=properties.getProperty("LOGIN_ATTEMPTS");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if( inputStream!=null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,14 +91,14 @@ public class ServletLoginCheck extends HttpServlet {
             if (timeoutCheck.before(new Date())) {
                 httpSession.setAttribute("attempts", 0);
             }
-            if ((Integer) httpSession.getAttribute("attempts") <= 4) {
+            if ((Integer) httpSession.getAttribute("attempts") <= Integer.parseInt(LOGIN_ATTEMPTS)) {
 
                 if (LoginDB.validate(jsonObject.getString("email"), cryptedPass)) {
                     System.out.println("LOG IN SUCCESSFUL!");
                     out.print("Log in successful!");
                     out.flush();
                     httpSession.setAttribute("email", jsonObject.getString("email"));
-                    httpSession.setMaxInactiveInterval(15*60);
+                    httpSession.setMaxInactiveInterval(Integer.parseInt(LOCK_TIME));
                     Connection connection = ConnectionJDBC.getConection();
                     final PreparedStatement ps;
                     try {
