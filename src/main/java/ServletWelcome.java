@@ -64,7 +64,6 @@ public class ServletWelcome extends HttpServlet {
                 try {
                     userDisplay_name = js.getString("displayName");
                     if (!userDisplay_name.equals("")) {
-                        System.out.println(userDisplay_name);
                         if (val.validate(userDisplay_name)) {
 
                             insertName(userDisplay_name, userEmail);

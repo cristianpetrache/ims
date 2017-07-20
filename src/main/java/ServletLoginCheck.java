@@ -97,19 +97,24 @@ public class ServletLoginCheck extends HttpServlet {
                     System.out.println("LOG IN SUCCESSFUL!");
                     out.print("Log in successful!");
                     out.flush();
+                    System.out.println(jsonObject.getString("email"));
                     httpSession.setAttribute("email", jsonObject.getString("email"));
                     httpSession.setMaxInactiveInterval(Integer.parseInt(LOCK_TIME));
+
                     Connection connection = ConnectionJDBC.getConection();
                     final PreparedStatement ps;
                     try {
+
                         ps = connection.prepareStatement(queryCheck);
                         ps.setString(1, jsonObject.getString("email"));
                         final ResultSet resultSet = ps.executeQuery();
                         if (resultSet.next()) {
+
                             User user = new User();
                             user.setDisplayName(resultSet.getString("display_name"));
                             user.setEmail(resultSet.getString("email"));
                             user.setPassword(resultSet.getString("password"));
+
 
                             this.getServletConfig().getServletContext().setAttribute("FinalUser", user);
                             request.getRequestDispatcher("/ServletWelcome").forward(request, response);
@@ -125,8 +130,8 @@ public class ServletLoginCheck extends HttpServlet {
                         }
                     }
 
-
-                } else {
+                }
+                 else {
 
                     System.out.println("LOG IN UNSUCCESFUL!");
                     out.print("LOG IN UNSUCCESSFUL!");
