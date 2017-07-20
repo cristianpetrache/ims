@@ -67,8 +67,8 @@ public class Servlet extends HttpServlet implements Constant {
 
                     JSONObject token = new JSONObject("{ token: "+object.getString("token")+ "}");
 
-                    int responseCode = user.validateToken(token.toString());
-                    if(responseCode == 200){
+//                    int responseCode = user.validateToken(token.toString());
+//                        if(responseCode == 200){
 
                         mistakes = user.dataValidation();
                         if(mistakes.size() != 0){
@@ -79,6 +79,8 @@ public class Servlet extends HttpServlet implements Constant {
                             }
                         }else {
 
+                            int responseCode = user.validateToken(token.toString());
+                            if(responseCode == 200){
                             user.setToken(object.getString("token"));
 
                             //generate and send secretCode
@@ -101,15 +103,21 @@ public class Servlet extends HttpServlet implements Constant {
                             System.out.println("servlet POST: " + user.toString());
                             this.getServletConfig().getServletContext().setAttribute("User", user);
                             request.getRequestDispatcher("/addUser").forward(request, response);
-                        }
+
+                            }else{
+                                System.out.println("The token has not been validated!");
+                                out.print("The token has not been validated!");
+                                out.flush();
+                            }
+                       }
 
 
-
-                    }else{
-                        System.out.println("The token has not been validated!");
-                        out.print("The token has not been validated!");
-                        out.flush();
-                    }
+//
+//                    }else{
+//                        System.out.println("The token has not been validated!");
+//                        out.print("The token has not been validated!");
+//                        out.flush();
+//                    }
 
 
                 }else{
